@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import useSWRInfinite from "swr/infinite";
-import ListObserver from "../scroll";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
+import AutoLogout from "../auto-logout";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -16,7 +16,7 @@ export default function App() {
   //   console.log(data);
 
   const pokemons = data ? [].concat(...data) : [];
-  pokemons.map((e) => console.log(e));
+  // pokemons.map((e) => console.log(e));
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
     isLoadingInitialData ||
@@ -34,8 +34,9 @@ export default function App() {
       <div style={{ fontFamily: "sans-serif" }}>
         <h1>API RETURN 20 ITEM EVERY FETCH</h1>
         <p style={{ position: "fixed", right: "0" }}>
-          showing {size} page(s)  {isLoadingMore ? "..." : ""}
-          {isLoadingMore ? "..." : "  Total Item:" + pokemons.length * 20 } {"  "}
+          showing {size} page(s) {isLoadingMore ? "..." : ""}
+          {isLoadingMore ? "..." : "  Total Item:" + pokemons.length * 20}{" "}
+          {"  "}
           issue(s){" "}
           <button onClick={() => setSize(size + 1)}>LOAD MeeORE</button>
           <button disabled={isRefreshing} onClick={() => mutate()}>
@@ -45,6 +46,9 @@ export default function App() {
             clear
           </button>
         </p>
+        <div>
+          <AutoLogout />
+        </div>
         {/* {pokemons.map((e) => (
         <ul key={e.next}>
           {e.results.map((res) => (
